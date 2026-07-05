@@ -28,6 +28,7 @@ Starter Code:
 """
 
 from pathlib import Path
+import string
 
 class MyLib():
     """library of texts"""
@@ -48,7 +49,10 @@ class MyText():
 
     def __init__(self, t_title, t_path):
         self.text_title = t_title
-        self.text_path = Path(t_path)
+        if Path(t_path).exists():
+            self.text_path = Path(t_path)
+        else:
+            self.text_path = None
         self.the_words: dict = {}
 
     def get_title(self):
@@ -61,7 +65,15 @@ class MyText():
     
     def get_contents(self):
         """method to grab contents of a text"""
-        return self.text_path.read_text(encoding='utf-8')
+#        incoming = self.text_path.read_text(encoding='utf-8').lower()
+        try:
+            incoming = self.text_path.read_text(encoding='utf-8')
+        except FileNotFoundError:
+            print(f"Sorry, the file {self.text_path} does not exist.")
+        for c in string.punctuation:
+            incoming.replace(c,"")
+        incoming.replace("“","")
+        return incoming
     
     def do_word_count(self):
         """method to do the core part of the function"""
@@ -83,8 +95,7 @@ class MyText():
             sorted_words.append(w)
         sorted_words.sort()
         for w in sorted_words:
-            if self.the_words[w] > 1:
-                print(f"{w} :: {self.the_words[w]}")
+            print(f"{w} :: {self.the_words[w]}")
     
     def __str__(self):
         return f"{self.text_title} is at {self.text_path.absolute}"
@@ -132,6 +143,7 @@ class Interactions():
 
 
 if __name__ == "__main__":
+
     texts_in = [
         ("Princess of Mars","texts/princess_mars.txt"),
         ("Tarzan","texts/Tarzan.txt"),
