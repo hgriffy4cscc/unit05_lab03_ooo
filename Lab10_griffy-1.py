@@ -10,6 +10,19 @@ The purpose of the program: Generates word counts for a selected file
 Starter Code:
     Course Texts:
         Python Crash Course 3rd ed Chapter 10
+    Other:
+        Use built-in print functions for classes:
+            https://www.geeksforgeeks.org/python/print-objects-of-a-class-in-python/
+        Check if dictionary key exists:
+            https://www.geeksforgeeks.org/python/python-check-given-key-already-exists-in-a-dictionary/
+        Increment by one:
+            https://stackoverflow.com/questions/2632677/python-integer-incrementing-with
+        iterate a dictionary:
+            https://www.geeksforgeeks.org/python/iterate-over-a-dictionary-in-python/
+        strip white space:
+            https://www.w3schools.com/python/ref_string_strip.asp
+        
+
 """
 
 from pathlib import Path
@@ -63,7 +76,8 @@ class MyText():
 #        max_word_length = max(len(self.the_words.keys()))
         print(f"Trying to print report about {len(self.the_words)} words")
         for w, ct in self.the_words.items():
-            print(f"{w} :: {ct}")
+            if ct > 1:
+                print(f"{w} :: {ct}")
     
     def __str__(self):
         return f"{self.text_title} is at {self.text_path.absolute}"
