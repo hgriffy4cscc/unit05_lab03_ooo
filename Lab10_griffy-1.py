@@ -76,10 +76,15 @@ class MyText():
     def print_report(self):
         """method to output the results of the word count"""
 #        max_word_length = max(len(self.the_words.keys()))
-        print(f"Trying to print report about {len(self.the_words)} words")
-        for w, ct in self.the_words.items():
-            if ct > 1:
-                print(f"{w} :: {ct}")
+        print(f"Usage of the {len(self.the_words)} words in {self.text_title}")
+        #create a list of the keys to sort and make more orderly/interesting output
+        sorted_words: list[str] = []
+        for w in self.the_words.keys():
+            sorted_words.append(w)
+        sorted_words.sort()
+        for w in sorted_words:
+            if self.the_words[w] > 1:
+                print(f"{w} :: {self.the_words[w]}")
     
     def __str__(self):
         return f"{self.text_title} is at {self.text_path.absolute}"
