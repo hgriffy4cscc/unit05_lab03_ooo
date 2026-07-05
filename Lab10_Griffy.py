@@ -69,10 +69,10 @@ class MyText():
         try:
             incoming = self.text_path.read_text(encoding='utf-8')
         except FileNotFoundError:
-            print(f"Sorry, the file {self.text_path} does not exist.")
-        for c in string.punctuation:
+            return f"Sorry, the file {self.text_path} does not exist."
+        chars_to_delete = string.punctuation + '”“‘'
+        for c in chars_to_delete:
             incoming.replace(c,"")
-        incoming.replace("“","")
         return incoming
     
     def do_word_count(self):
