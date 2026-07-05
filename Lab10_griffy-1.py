@@ -43,6 +43,9 @@ class MyText():
         """return the path object for this text"""
         return self.text_path
     
+    def get_contents(self):
+        return self.text_path.read_text(encoding='utf-8')
+    
     def __str__(self):
         return f"{self.text_title} is at {self.text_path.absolute}"
 
@@ -59,6 +62,10 @@ class Interactions():
         for i, t in enumerate(the_lib.texts):
             print(f"{i+1}: {t.get_title()}")
         print(f"{len(the_lib.texts)+1}: Exit")
+
+    def did_user_say_quit(self, the_lib):
+        """method to determine which menu option indicates quit (ie, final option)"""
+        return self.choice == len(the_lib.texts)
 
     def get_text_selection(self, the_lib):
         self.__show_menu(the_lib)
@@ -96,6 +103,9 @@ if __name__ == "__main__":
         text_i = MyText(t[0], t[1])
         the_lib.add_text(text_i)
     interactions = Interactions()
-    interactions.get_text_selection(the_lib)
-    print(the_lib.get_text(interactions.get_choice()))
+    while not interactions.did_user_say_quit(the_lib):
+        interactions.get_text_selection(the_lib)
+        the_lib.get_text(interactions.choice).do_word_count()
+    
+    
 
