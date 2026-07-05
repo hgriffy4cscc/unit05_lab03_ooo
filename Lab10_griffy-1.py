@@ -16,15 +16,17 @@ from pathlib import Path
 
 class MyLib():
     """library of texts"""
-    texts: list[MyText] = []
 
     def __init__(self):
-        pass
+        self.texts: list[MyText] = []
 
-    def add_text(self, new_text: MyText ):
+    def add_text(self, new_text: MyText ) -> None:
         """add a text to the library"""
         self.texts.append(new_text)
     
+    def get_text(self, index) -> MyText:
+        """return a text based on index in list"""
+        return self.texts[index]
 
 class MyText():
     """class for individual texts"""
@@ -41,8 +43,8 @@ class MyText():
         """return the path object for this text"""
         return self.text_path
     
-    def __repr__(self) -> str:
-        print(f"{self.text_title} is at {self.text_path.absolute}")
+    def __str__(self):
+        return f"{self.text_title} is at {self.text_path.absolute}"
 
 class Interactions():
     """class to manage user interactions"""
@@ -51,7 +53,7 @@ class Interactions():
     def __init__(self) -> None:
         self.choice = -1
 
-    def show_menu(self, the_lib):
+    def __show_menu(self, the_lib):
         """prompt user with menu"""
         print("Please select a file to analyze:")
         for i, t in enumerate(the_lib.texts):
@@ -59,21 +61,25 @@ class Interactions():
         print(f"{len(the_lib.texts)+1}: Exit")
 
     def get_text_selection(self, the_lib):
+        self.__show_menu(the_lib)
         try:
             self.choice = int(input("Enter your choice:"))-1
         except ValueError:
-            print("Please enter one of the numerical options")
-            self.show_menu(the_lib)
-        self.validate_response(the_lib)
+            print("Please enter response in numerical form")
+            self.get_text_selection(the_lib)
+        if not self.validate_response(the_lib):
+            self.choice = -1
+            self.get_text_selection(the_lib)
 
     def validate_response(self, the_lib):
         """method to check if user response is acceptable, re-prompt if not"""
         if self.choice not in range(len(the_lib.texts)+1):
-            print("Please choose one of the available texts (or quit)")
-            self.show_menu(the_lib)
-            self.get_text_selection(the_lib)
+            print("Please choose one of the available options")
+            return False
+        else:
+            return True
     
-    def get_choice(self):
+    def get_choice(self) -> int:
         """method to return choice"""
         return self.choice
 
@@ -86,10 +92,10 @@ if __name__ == "__main__":
         ("The Count of Monte Cristo","texts/monte_cristo.txt")
         ]
     the_lib = MyLib()
-    for t in texts_in:
-        the_lib.add_text(MyText(t[0] , t[1]))
+    for i, t in enumerate(texts_in):
+        text_i = MyText(t[0], t[1])
+        the_lib.add_text(text_i)
     interactions = Interactions()
-    interactions.show_menu(the_lib)
     interactions.get_text_selection(the_lib)
-    print(interactions.get_choice())
+    print(the_lib.get_text(interactions.get_choice()))
 
