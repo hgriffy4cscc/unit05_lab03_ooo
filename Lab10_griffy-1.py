@@ -34,6 +34,7 @@ class MyText():
     def __init__(self, t_title, t_path):
         self.text_title = t_title
         self.text_path = Path(t_path)
+        self.the_words: dict = {}
 
     def get_title(self):
         """return the title for this text"""
@@ -44,7 +45,25 @@ class MyText():
         return self.text_path
     
     def get_contents(self):
+        """method to grab contents of a text"""
         return self.text_path.read_text(encoding='utf-8')
+    
+    def do_word_count(self):
+        """method to do the core part of the function"""
+        temp_words = self.get_contents().split(" ")
+        for w in temp_words:
+            if w.strip() in self.the_words:
+                self.the_words[w.strip()] += 1
+            else:
+                self.the_words[w.strip()] = 1
+        return len(self.the_words)
+    
+    def print_report(self):
+        """method to output the results of the word count"""
+#        max_word_length = max(len(self.the_words.keys()))
+        print(f"Trying to print report about {len(self.the_words)} words")
+        for w, ct in self.the_words.items():
+            print(f"{w} :: {ct}")
     
     def __str__(self):
         return f"{self.text_title} is at {self.text_path.absolute}"
@@ -105,7 +124,9 @@ if __name__ == "__main__":
     interactions = Interactions()
     while not interactions.did_user_say_quit(the_lib):
         interactions.get_text_selection(the_lib)
-        the_lib.get_text(interactions.choice).do_word_count()
+        if not interactions.did_user_say_quit(the_lib):
+            the_lib.get_text(interactions.choice).do_word_count()
+            the_lib.get_text(interactions.choice).print_report()
     
     
 
