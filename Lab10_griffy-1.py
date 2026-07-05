@@ -11,6 +11,8 @@ Starter Code:
     Course Texts:
         Python Crash Course 3rd ed Chapter 10
     Other:
+        Try/Except for user input -> integer (to get exception type):
+            https://stackoverflow.com/questions/8075877/converting-string-to-int-using-try-except-in-python
         Use built-in print functions for classes:
             https://www.geeksforgeeks.org/python/print-objects-of-a-class-in-python/
         Check if dictionary key exists:
@@ -141,6 +143,4 @@ if __name__ == "__main__":
         if not interactions.did_user_say_quit(the_lib):
             the_lib.get_text(interactions.choice).do_word_count()
             the_lib.get_text(interactions.choice).print_report()
-    
-    
-
+            input("Enter to continue:")
